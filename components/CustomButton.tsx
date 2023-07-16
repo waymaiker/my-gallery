@@ -6,7 +6,7 @@ type CustomButtonAttributesType = {
   action: Function,
   text?: string,
   isDisabled?: boolean,
-  withIcon: string
+  withIcon?: string
 };
 
 export default function CustomButton({action, text, isDisabled, withIcon}: CustomButtonAttributesType) {
