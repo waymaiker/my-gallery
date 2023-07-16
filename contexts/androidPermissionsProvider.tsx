@@ -1,8 +1,8 @@
+import React from "react";
 import{ createContext, useEffect, useState } from "react"
 import { PermissionsAndroid, Platform } from "react-native";
 import { PermissionStatus } from "expo-image-picker";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 type ItemProps = {
   children: any

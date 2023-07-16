@@ -1,3 +1,4 @@
+import React from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Entypo } from '@expo/vector-icons';
 
