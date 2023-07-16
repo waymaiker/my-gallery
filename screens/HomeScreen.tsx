@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { FlatList, Pressable, SafeAreaView, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -57,7 +58,7 @@ export default function HomeScreen() {
 
   const AddPhotoButton = () => (
     <CustomButton
-      withIcon="camera"
+      withIcon="add"
       action={() => {
         setVisible(true)
         setSelectedPictures([])

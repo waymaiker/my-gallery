@@ -1,4 +1,4 @@
-
+import React from "react";
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Controller, useForm } from "react-hook-form";
@@ -22,11 +22,17 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
   const [pictureTitle, setPictureTitle] = useState('')
   const [pictureURI, setPictureURI] = useState<string>('')
   const [isPictureSelected, setIsPictureSelected] = useState(false)
+  const [isPictureTaken, setIsPictureTaken] = useState(false)
   const [nmbersOfPictures, setNmberOfPictures] = useState<number>(0)
 
   //Hooks
   const { control, watch, reset, } = useForm();
-  const { isPermissionGranted, askPermissions } = useAndroidPermissionsProvider();
+  const {
+    isDataPermissionGranted,
+    askDataPermissions,
+    isCameraPermissionGranted,
+    askCameraPermissions
+  } = useAndroidPermissionsProvider();
 
   //Expected effects
   useEffect(()=>{
@@ -52,9 +58,29 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
     }
   }
 
+
+  const takeAPicture = async () => {
+    if(pictureTitle.length > 0){
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1
+      });
+
+      if(!result.canceled){
+        const uri:string = result.assets[0].uri;
+        setPictureURI(uri)
+        setNmberOfPictures(nmbersOfPictures => nmbersOfPictures + 1);
+        setIsPictureTaken(true)
+      }
+    } else {
+      alert('Please add a title to your picture')
+    }
+  }
+
   const resetAll = () => {
     setModalVisible(false)
     setIsPictureSelected(false)
+    setIsPictureTaken(false)
     setPictureURI('')
     reset({title: ''})
   }
@@ -63,7 +89,7 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
     <View style={styles.modalFooter}>
       <CustomButton text="Cancel" action={()=>resetAll()}/>
       {
-        isPictureSelected
+        (isPictureSelected || isPictureTaken)
         && <CustomButton
             text="Add Picture"
             action={
@@ -102,22 +128,35 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
             />
           </View>
           {
-            isPictureSelected
+            isPictureSelected || isPictureTaken
             ? <AntDesign
                 name="checkcircle"
                 size={20}
                 color='green'
                 style={{textAlign:'center', justifyContent: 'space-between' }}
-                children={ <Text> A picture has been selected </Text>}
-              />
-            : <CustomButton
-                text="Choose a Picture"
-                action={
-                  isPermissionGranted
-                    ? () => showMyGallery()
-                    : async () => await askPermissions()
+                children={
+                  (isPictureSelected && <Text> A picture has been selected </Text> ) ||
+                  (isPictureTaken && <Text> A picture has been taken </Text> )
                 }
               />
+            : <View>
+                <CustomButton
+                    text="Choose a picture"
+                    action={
+                      isDataPermissionGranted
+                        ? () => showMyGallery()
+                        : () => askDataPermissions()
+                    }
+                />
+                <CustomButton
+                  text='Take a picture'
+                  action={
+                    isCameraPermissionGranted
+                      ? () => takeAPicture()
+                      : () => askCameraPermissions()
+                  }
+                />
+              </View>
           }
           <ModalFooter />
         </View>

@@ -1,3 +1,4 @@
+import React from "react";
 import { Text, TouchableOpacity } from "react-native";
 import CustomModal from "../components/CustomModal";
 import ImageCard from "../components/ImageCard";
