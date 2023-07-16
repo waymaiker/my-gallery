@@ -1,57 +1,52 @@
 import React from "react";
-import{ createContext, useEffect, useState } from "react"
+import{ createContext, useState } from "react"
 import { PermissionsAndroid, Platform } from "react-native";
 import { PermissionStatus } from "expo-image-picker";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type ItemProps = {
   children: any
 }
 export interface AndroidPermissionInterface {
-  askPermissions: Function,
-  isPermissionGranted: boolean,
+  askDataPermissions: Function,
+  askCameraPermissions: Function,
+  isDataPermissionGranted: boolean,
+  isCameraPermissionGranted: boolean,
 }
 
 const defaultValue = {
-  askPermissions: ()=>{},
-  isPermissionGranted: false,
+  askDataPermissions: ()=>{},
+  askCameraPermissions: ()=>{},
+  isDataPermissionGranted: false,
+  isCameraPermissionGranted: false,
 } as AndroidPermissionInterface;
 
 const AndroidPermissionsContext = createContext<AndroidPermissionInterface>(defaultValue);
 
 export const AndroidPermissionsProvider = ({ children }: ItemProps) => {
-  const [isPermissionGranted, setPermission] = useState(false);
-  const [permissionsAsked, setPermissionsAsked] = useState(false);
+  const [isDataPermissionGranted, setDataPermission] = useState(false);
+  const [isCameraPermissionGranted, setCameraPermission] = useState(false);
 
   const permissionType = Platform.Version >= 33
       ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
       : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
 
-  const checkPermissions = async () => {
-    const hasPermission = await PermissionsAndroid.check(permissionType);
-    if(hasPermission) setPermission(true);
-    await AsyncStorage.setItem('isPermissionGranted', JSON.stringify(isPermissionGranted));
-  }
-
-  const askPermissions = async () => {
+  const askDataPermissions = async () => {
     const status = await PermissionsAndroid.request(permissionType);
-    if(status == PermissionStatus.GRANTED) setPermission(true)
-    await AsyncStorage.setItem('isPermissionGranted', JSON.stringify(isPermissionGranted));
+    if(status == PermissionStatus.GRANTED) setDataPermission(true)
   }
 
-  useEffect(()=>{
-    if(permissionsAsked){
-      askPermissions()
-      checkPermissions()
-      setPermissionsAsked(false)
-    }
-  },[permissionsAsked])
+  const askCameraPermissions = async () => {
+    const status = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
+    if(status == PermissionStatus.GRANTED) setCameraPermission(true)
+  }
 
   return (
     <AndroidPermissionsContext.Provider
       value={{
-        askPermissions,
-        isPermissionGranted,
+        askDataPermissions,
+        askCameraPermissions,
+        isDataPermissionGranted,
+        isCameraPermissionGranted
       }}
     >
       {children}
