@@ -1,6 +1,5 @@
 import React from "react";
-import { useNavigation } from '@react-navigation/native';
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, View } from "react-native";
 
 import usePhoneOrientationProvider from "../hooks/usePhoneOrientationProvider";
 
@@ -10,12 +9,7 @@ type CardScreenProps = {
   route: { params: { title: string, uri: string } }
 }
 
-type Nav = {
-  goBack: () => {}
-}
-
 export default function CardScreen({route}: CardScreenProps) {
-  const navigation = useNavigation<Nav>()
   const { params: { title, uri } } = route;
 
   //Hooks
@@ -23,7 +17,7 @@ export default function CardScreen({route}: CardScreenProps) {
 
   const textStyle = { padding: isPortrait ? 0 : 15 }
   return (
-    <TouchableOpacity onPress={() => navigation.goBack() } style={ !isPortrait && { flexDirection: 'row', alignItems: 'center', justifyContent: "center" }}>
+    <View style={ !isPortrait && { flexDirection: 'row', alignItems: 'center', justifyContent: "center" }}>
       <ImageCard
         uri={uri}
         fullScreen={true}
@@ -37,6 +31,6 @@ export default function CardScreen({route}: CardScreenProps) {
       }}>
         Name: {title}
       </Text>
-    </TouchableOpacity>
+    </View>
   );
 }
