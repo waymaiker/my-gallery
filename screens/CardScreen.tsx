@@ -1,7 +1,6 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-import usePhoneOrientationProvider from "../hooks/usePhoneOrientationProvider";
 
 import ImageCard from "../components/ImageCard";
 
@@ -12,25 +11,20 @@ type CardScreenProps = {
 export default function CardScreen({route}: CardScreenProps) {
   const { params: { title, uri } } = route;
 
-  //Hooks
-  const { isPortrait } = usePhoneOrientationProvider()
-
-  const textStyle = { padding: isPortrait ? 0 : 15 }
   return (
-    <View style={ !isPortrait && { flexDirection: 'row', alignItems: 'center', justifyContent: "center" }}>
-      <ImageCard
-        uri={uri}
-        fullScreen={true}
-      />
+    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "center" }}>
       <Text style={{
         backgroundColor: "white",
         textAlign: 'center',
         fontSize: 20,
         borderRadius: 10,
-        ...textStyle
       }}>
         Name: {title}
       </Text>
+      <ImageCard
+        uri={uri}
+        fullScreen={true}
+      />
     </View>
   );
 }

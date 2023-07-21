@@ -27,12 +27,11 @@ export default function HomeScreen() {
   const [picturesCurrentlySelected, setSelectedPictures] = useState<number[]>([])
 
   //Hooks
-  const { isPortrait, definePhoneOrientation } = usePhoneOrientationProvider()
+  const { isPortrait } = usePhoneOrientationProvider()
   const navigation = useNavigation<Nav>()
 
   //Expected effects
-  useEffect(()=>{ setSelectedPictures([]), getData(), definePhoneOrientation() }, [])
-  useEffect(()=>{ definePhoneOrientation() },[isPortrait])
+  useEffect(()=>{ setSelectedPictures([]), getData() }, [])
   useEffect(()=>{ storeData() },[myGallery, picturesCurrentlySelected])
 
   const storeData = async () => {
