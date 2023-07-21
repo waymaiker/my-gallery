@@ -1,5 +1,4 @@
-import React from "react";
-import { createContext, useState } from "react";
+import React, { useEffect, createContext, useState } from "react";
 import { Dimensions } from "react-native";
 
 type ItemProps = {
@@ -20,17 +19,19 @@ const PhoneOrientationContext = createContext<PhoneOrientationInterface>(default
 
 export const PhoneOrientationProvider = ({ children }: ItemProps) => {
   const [isPortrait, setIsPortrait] = useState(defaultValue.isPortrait)
-  
+
   const setPhoneOrientation = () => {
     const dim = Dimensions.get('screen');
     setIsPortrait(dim.height >= dim.width)
   }
 
-  const definePhoneOrientation = () => {    
+  const definePhoneOrientation = () => {
     Dimensions.addEventListener('change', () => {
-      setPhoneOrientation()      
+      setPhoneOrientation()
     });
   }
+
+  useEffect(()=>{ definePhoneOrientation() }, [isPortrait])
 
   return (
     <PhoneOrientationContext.Provider
