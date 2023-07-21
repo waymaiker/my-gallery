@@ -23,8 +23,6 @@ type Nav = {
 export default function HomeScreen() {
   //States
   const [visible, setVisible] = useState(false);
-  const [showImageDetail, setShowImageDetail] = useState(false);
-  const [imageDetail, setImageDetail] = useState({uri: '', title: ''});
   const [myGallery, setMyGallery] = useState<ItemMyGalleryProps[]>([])
   const [picturesCurrentlySelected, setSelectedPictures] = useState<number[]>([])
 
@@ -52,11 +50,6 @@ export default function HomeScreen() {
     } else {
       setSelectedPictures(picturesCurrentlySelected.filter(element => element != id))
     }
-  }
-
-  const pressAnItem = (uri: string, title: string) => {
-    setImageDetail({uri, title})
-    setShowImageDetail(true)
   }
 
   const AddPhotoButton = () => (
