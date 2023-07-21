@@ -1,21 +1,23 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { FlatList, Pressable, SafeAreaView, Text, View } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Stack } from "expo-router";
-import { AndroidPermissionsProvider } from "../contexts/androidPermissionsProvider";
+import { FlatList, Pressable, SafeAreaView, Text, View } from "react-native";
+
 import usePhoneOrientationProvider from "../hooks/usePhoneOrientationProvider";
 
 import ImageCard from "../components/ImageCard";
 import ModalScreen from "./ModalScreen/ModalScreen";
-import CardScreen from "./CardScreen";
 import CustomButton from "../components/CustomButton";
-
 
 type ItemMyGalleryProps = {
   id: number,
   uri: string,
   title: string
+}
+
+type Nav = {
+  navigate: (name: string, params: {}) => {}
 }
 
 export default function HomeScreen() {
@@ -28,9 +30,10 @@ export default function HomeScreen() {
 
   //Hooks
   const { isPortrait, definePhoneOrientation } = usePhoneOrientationProvider()
+  const navigation = useNavigation<Nav>()
 
   //Expected effects
-  useEffect(()=>{ setSelectedPictures([]), getData(), definePhoneOrientation() },[])
+  useEffect(()=>{ setSelectedPictures([]), getData(), definePhoneOrientation() }, [])
   useEffect(()=>{ definePhoneOrientation() },[isPortrait])
   useEffect(()=>{ storeData() },[myGallery, picturesCurrentlySelected])
 
@@ -84,9 +87,36 @@ export default function HomeScreen() {
     />
   )
 
+  const Header = () => {
+   return <View style={{
+      flexDirection: 'row',
+      width: '100%',
+      justifyContent:'space-around',
+      backgroundColor: 'white',
+      padding: 10
+    }}>
+      <HeaderLeft />
+      <HeaderTitle />
+      <HeaderRight />
+    </View>
+  }
+
+  const HeaderLeft = () => {
+    return <View style={{ flexDirection: 'row', width:'33%', justifyContent: 'flex-start' }}>
+      { picturesCurrentlySelected.length > 0 && <UnSelectAllPhotosButton /> }
+    </View>
+  }
+
+  const HeaderRight = () => {
+    return <View style={{ flexDirection: 'row', width:'33%', justifyContent:'flex-end' }}>
+      {picturesCurrentlySelected.length > 0 && <DeletePhotoButton /> }
+      <AddPhotoButton />
+    </View>
+  }
+
   const HeaderTitle = () => {
     return picturesCurrentlySelected.length > 0
-      ? <View style={{ width: "45%", flexDirection: 'row', justifyContent: 'space-between' }}>
+      ? <View style={{ flexDirection: 'row' }}>
           <Text style={{fontWeight:'bold', fontSize:15 }}> Selected </Text>
           <Text style={{ backgroundColor:'grey', borderRadius: 20 }}> {picturesCurrentlySelected.length} </Text>
         </View>
@@ -102,7 +132,7 @@ export default function HomeScreen() {
   const SelectableItem = ({id, uri, title}: ItemMyGalleryProps) => {
     return <Pressable
       onLongPress={() => selectAnItem(id)}
-      onPress={() => pressAnItem(uri, title)}
+      onPress={() => navigation.navigate('CardScreen', { uri: uri, title: title } ) }
       style={picturesCurrentlySelected.includes(id) ? { opacity: 0.5 } : {}}
     >
       <ImageCard
@@ -114,30 +144,12 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1, alignItems:'center' }}>
-      <Stack.Screen
-        options={{
-          headerTitleAlign: 'center',
-          headerLeft: () => picturesCurrentlySelected.length > 0 && <UnSelectAllPhotosButton />,
-          headerTitle: () => <HeaderTitle />,
-          headerRight: () => <View style={{ flexDirection: 'row'}}>
-           {picturesCurrentlySelected.length > 0 && <DeletePhotoButton /> }
-           <AddPhotoButton />
-          </View>,
-        }}
+      <Header />
+      <ModalScreen
+        modalVisible={visible}
+        setModalVisible={setVisible}
+        setMyGallery={setMyGallery}
       />
-      <CardScreen
-        title={imageDetail.title}
-        uri={imageDetail.uri}
-        showImageDetail={showImageDetail}
-        setShowImageDetail={setShowImageDetail}
-      />
-      <AndroidPermissionsProvider>
-        <ModalScreen
-          modalVisible={visible}
-          setModalVisible={setVisible}
-          setMyGallery={setMyGallery}
-        />
-      </AndroidPermissionsProvider>
       {
         myGallery.length != 0
         ? <FlatList
@@ -145,7 +157,13 @@ export default function HomeScreen() {
             data={myGallery}
             numColumns={isPortrait ? 3 : 6}
             key={isPortrait ? 3 : 6}
-            renderItem={({item}) => <SelectableItem id={item['id']} uri={item['uri']} title={item['title']} />}
+            renderItem={({item}) =>
+              <SelectableItem
+                id={item['id']}
+                uri={item['uri']}
+                title={item['title']}
+              />
+            }
           />
         : <EmptyGallery />
       }
