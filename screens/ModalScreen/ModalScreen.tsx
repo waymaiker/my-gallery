@@ -5,7 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import { AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
-import useAndroidPermissionsProvider from "../../hooks/useAndroidPermissionsProvider";
+import useAppPermissionsProvider from "../../hooks/useAppPermissionsProvider";
 
 import CustomButton from '../../components/CustomButton';
 import ModalHeaderWithExitButton from './components/ModalHeaderWithExitButton';
@@ -32,7 +32,7 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
     askDataPermissions,
     isCameraPermissionGranted,
     askCameraPermissions
-  } = useAndroidPermissionsProvider();
+  } = useAppPermissionsProvider();
 
   //Expected effects
   useEffect(()=>{

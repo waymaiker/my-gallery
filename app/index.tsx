@@ -3,7 +3,7 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { AndroidPermissionsProvider } from "../contexts/androidPermissionsProvider";
+import { AppPermissionsProvider } from "../contexts/appPermissionsProvider";
 import { PhoneOrientationProvider } from "../contexts/phoneOrientationProvider";
 
 import HomeScreen from "../screens/HomeScreen";
@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer independent={true}>
-      <AndroidPermissionsProvider>
+      <AppPermissionsProvider>
         <PhoneOrientationProvider>
           <Stack.Navigator>
             <Stack.Screen
@@ -28,7 +28,7 @@ export default function App() {
             />
           </Stack.Navigator>
         </PhoneOrientationProvider>
-      </AndroidPermissionsProvider>
+      </AppPermissionsProvider>
     </NavigationContainer>
   )
 }
