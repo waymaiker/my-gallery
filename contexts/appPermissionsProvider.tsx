@@ -46,7 +46,7 @@ export const AppPermissionsProvider = ({ children }: ItemProps) => {
   }
 
   const askCameraPermissions = async () => {
-    if(Device.osName === 'android'){
+    if(Device.osName === 'Android'){
       const status = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
       if(status == PermissionStatus.GRANTED) setCameraPermission(true)
 
