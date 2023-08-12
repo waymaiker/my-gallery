@@ -40,8 +40,8 @@ export const AppPermissionsProvider = ({ children }: ItemProps) => {
       if(status == PermissionStatus.GRANTED) setDataPermission(true)
 
     } else if (Device.osName === 'iOS'){
-      const status = await MediaLibrary.requestPermissionsAsync();
-      setDataPermission(status.status === 'granted')
+      const request = await MediaLibrary.requestPermissionsAsync();
+      setDataPermission(request.status === 'granted')
     }
   }
 
@@ -51,8 +51,8 @@ export const AppPermissionsProvider = ({ children }: ItemProps) => {
       if(status == PermissionStatus.GRANTED) setCameraPermission(true)
 
     } else if (Device.osName === 'iOS'){
-      const status = await Camera.requestCameraPermissionsAsync();
-      setCameraPermission(status.status === 'granted')
+      const request = await Camera.requestCameraPermissionsAsync();
+      setCameraPermission(request.status === 'granted')
     }
   }
 
