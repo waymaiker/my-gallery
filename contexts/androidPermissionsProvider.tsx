@@ -1,7 +1,10 @@
 import React from "react";
 import{ createContext, useState } from "react"
 import { PermissionsAndroid, Platform } from "react-native";
+
+import { Camera } from 'expo-camera';
 import { PermissionStatus } from "expo-image-picker";
+import * as MediaLibrary from 'expo-media-library';
 
 type ItemProps = {
   children: any
@@ -26,18 +29,30 @@ export const AndroidPermissionsProvider = ({ children }: ItemProps) => {
   const [isDataPermissionGranted, setDataPermission] = useState(false);
   const [isCameraPermissionGranted, setCameraPermission] = useState(false);
 
-  const permissionType = Platform.Version >= 33
+  const askDataPermissions = async () => {
+    if(Platform.OS === 'android'){
+      const permissionType = Platform.Version >= 33
       ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
       : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
 
-  const askDataPermissions = async () => {
-    const status = await PermissionsAndroid.request(permissionType);
-    if(status == PermissionStatus.GRANTED) setDataPermission(true)
+      const status = await PermissionsAndroid.request(permissionType);
+      if(status == PermissionStatus.GRANTED) setDataPermission(true)
+
+    } else if (Platform.OS === 'ios'){
+      const status = await MediaLibrary.requestPermissionsAsync();
+      setDataPermission(status.status === 'granted')
+    }
   }
 
   const askCameraPermissions = async () => {
-    const status = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
-    if(status == PermissionStatus.GRANTED) setCameraPermission(true)
+    if(Platform.OS === 'android'){
+      const status = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
+      if(status == PermissionStatus.GRANTED) setCameraPermission(true)
+
+    } else if (Platform.OS === 'ios'){
+      const status = await Camera.requestCameraPermissionsAsync();
+      setCameraPermission(status.status === 'granted')
+    }
   }
 
   return (
