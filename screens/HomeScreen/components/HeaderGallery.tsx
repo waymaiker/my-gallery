@@ -42,7 +42,7 @@ export default function HeaderGallery({addPhoto, deletePhoto, setSelectedPicture
 
   const HeaderRight = () => {
     return <View style={{ flexDirection: 'row', width:'33%', justifyContent:'flex-end' }}>
-      {isPicturesCurrentlySelected && <DeletePhotoButton /> }
+      { isPicturesCurrentlySelected && <DeletePhotoButton /> }
       <AddPhotoButton />
     </View>
   }
