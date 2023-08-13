@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AppPermissionsProvider } from "../contexts/appPermissionsProvider";
 import { PhoneOrientationProvider } from "../contexts/phoneOrientationProvider";
 
-import HomeScreen from "../screens/HomeScreen";
+import HomeScreen from "../screens/HomeScreen/HomeScreen";
 import CardScreen from "../screens/CardScreen";
 
 const Stack = createNativeStackNavigator();
