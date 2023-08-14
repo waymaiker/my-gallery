@@ -41,9 +41,9 @@ export default function HeaderGallery({addPhoto, deletePhoto, setSelectedPicture
 
   const HeaderTitle = () => {
     return isPicturesCurrentlySelected
-      ? <View style={{ flexDirection: 'row' }}>
-          <Text style={{fontWeight:'bold', fontSize:15 }}> Selected </Text>
-          <Text style={{ backgroundColor:'grey', borderRadius: 20 }}> {picturesCurrentlySelected.length} </Text>
+      ? <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ fontWeight:'bold', fontSize:15 }}> Selected </Text>
+          <Text style={{ backgroundColor:'grey', padding:5, borderRadius: 20 }}> {picturesCurrentlySelected.length} </Text>
         </View>
       : <Text style={{fontWeight:'bold', fontSize:15 }}> My Portfolio </Text>
   }
