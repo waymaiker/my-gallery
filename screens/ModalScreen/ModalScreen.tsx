@@ -19,7 +19,6 @@ type ItemMyGalleryType = {
   sizeImage?: string
 }
 
-
 type ItemProps = {
   modalVisible: boolean,
   setModalVisible: Function,
@@ -31,7 +30,7 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
   //States
   const [pictureTitle, setPictureTitle] = useState('')
   const [pictureURI, setPictureURI] = useState<string>('')
-  const [pictureSize, setPictureSize] = useState<object>({})
+  const [pictureSize, setPictureSize] = useState({'height': 0, 'width': 0})
   const [isPictureSelected, setIsPictureSelected] = useState(false)
   const [isPictureTaken, setIsPictureTaken] = useState(false)
   const [numbersOfPictures, setNumberOfPictures] = useState<number>(myGallery.length)
@@ -66,7 +65,7 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
     if(pictureTitle.length > 0){
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: false,
+        allowsEditing: true,
         quality: 1
       });
 

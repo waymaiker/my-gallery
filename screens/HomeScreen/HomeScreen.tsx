@@ -28,6 +28,7 @@ type ItemMyGalleryProps = {
   id: number,
   uri: string,
   title: string,
+  size: object,
   sizeImage?: string
 }
 
@@ -80,10 +81,10 @@ export default function HomeScreen() {
     setSelectedPictures([])
   }
 
-  const SelectableItem = ({id, uri, title, sizeImage}: ItemMyGalleryProps) => {
+  const SelectableItem = ({id, uri, title, sizeImage, size}: ItemMyGalleryProps) => {
     return <Pressable
       onLongPress={() => selectAnItem(id)}
-      onPress={() => navigation.navigate('CardScreen', { id:id, uri: uri, title: title } ) }
+      onPress={() => navigation.navigate('CardScreen', { id:id, uri: uri, title: title, size: size } ) }
       style={picturesCurrentlySelected.includes(id) ? { opacity: 0.5 } : {}}
     >
       <ImageCard
@@ -106,6 +107,7 @@ export default function HomeScreen() {
               id={item['id']}
               uri={item['uri']}
               title={item['title']}
+              size={item['size']}
             />
           }
         />
@@ -123,6 +125,7 @@ export default function HomeScreen() {
               id={item['id']}
               uri={item['uri']}
               title={item['title']}
+              size={item['size']}
               sizeImage="medium"
             />
           }
