@@ -156,7 +156,7 @@ export default function HomeScreen() {
   });
 
   return (
-    <SafeAreaView style={{ flex: 1, paddingTop: Device.osName == 'android' ? StatusBar.currentHeight : 0 }}>
+    <SafeAreaView style={{ flex: 1, paddingTop: Device.osName == 'Android' ? StatusBar.currentHeight : 0 }}>
       <HeaderGallery
         setSelectedPictures={() => setSelectedPictures([])}
         picturesCurrentlySelected={picturesCurrentlySelected}
