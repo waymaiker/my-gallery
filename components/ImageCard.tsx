@@ -1,34 +1,34 @@
 import React from "react";
-import { StyleSheet, View , Image } from "react-native";
+import { View , Image, Dimensions } from "react-native";
 
 type ItemProps = {
+  id: number,
   uri: string,
-  fullScreen?: boolean
+  sizeType?: string
 };
 
-export default function ImageCard({uri, fullScreen}: ItemProps) {
-  const isNormalSize:boolean = fullScreen == undefined;
-  const sizeType:object = isNormalSize
-    ? { width: 100, height: 100 }
-    : { width: "100%", height: "95%", aspectRatio: 1/2 };
+export default function ImageCard({id, uri, sizeType}: ItemProps) {
+  const screenWidth = Dimensions.get('window').width;
+  const isLarge:boolean = sizeType == 'large';
+
+  const sT = () => {
+    switch(sizeType){
+      case 'medium':
+        return { width: screenWidth, aspectRatio: 1 };
+      case 'large':
+        return { width: screenWidth, height: '80%', aspectRatio: 1/2 }
+      default:
+        return { width: screenWidth/3, aspectRatio: 1 };
+    }
+  }
 
   return (
-    <View style={ isNormalSize ? styles.container : styles.containerFullSize }>
+    <View style={ isLarge ? {padding: 10} : {}}>
       <Image
+        key={id}
         source={{uri: uri}}
-        style={sizeType}
+        style={sT()}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    padding: 10,
-  },
-  containerFullSize:{
-    alignItems: 'center',
-    paddingHorizontal: 10,
-  },
-});
