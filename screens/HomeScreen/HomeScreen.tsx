@@ -1,19 +1,22 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigation } from '@react-navigation/native';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { FlatList, Platform, Pressable, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { FlatList, Pressable, SafeAreaView, Text, View } from "react-native";
 
 import usePhoneOrientationProvider from "../../hooks/usePhoneOrientationProvider";
 
 import ImageCard from "../../components/ImageCard";
 import ModalScreen from "../ModalScreen/ModalScreen";
 import HeaderGallery from "./components/HeaderGallery";
+import { Icons } from "../../constants/constants";
 
 type ItemMyGalleryProps = {
   id: number,
   uri: string,
-  title: string
+  title: string,
+  sizeImage?: string
 }
 
 type Nav = {
@@ -25,6 +28,15 @@ export default function HomeScreen() {
   const [visible, setVisible] = useState(false);
   const [myGallery, setMyGallery] = useState<ItemMyGalleryProps[]>([])
   const [picturesCurrentlySelected, setSelectedPictures] = useState<number[]>([])
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: 'first', title: 'First' },
+    { key: 'second', title: 'Second' },
+  ]);
+
+  //Variables
+  const layout = useWindowDimensions();
+  const isMyGalleryEmpty = myGallery.length != 0;
 
   //Hooks
   const { isPortrait } = usePhoneOrientationProvider()
@@ -57,21 +69,22 @@ export default function HomeScreen() {
     </View>
   )
 
-  const SelectableItem = ({id, uri, title}: ItemMyGalleryProps) => {
+  const SelectableItem = ({id, uri, title, sizeImage}: ItemMyGalleryProps) => {
     return <Pressable
       onLongPress={() => selectAnItem(id)}
-      onPress={() => navigation.navigate('CardScreen', { uri: uri, title: title } ) }
+      onPress={() => navigation.navigate('CardScreen', { id:id, uri: uri, title: title } ) }
       style={picturesCurrentlySelected.includes(id) ? { opacity: 0.5 } : {}}
     >
       <ImageCard
-        key={id}
+        id={id}
         uri={uri}
+        sizeType={sizeImage}
       />
     </Pressable>
   }
 
-  const ContentGallery = () => {
-    return myGallery.length != 0
+  const ContentGridGallery = () => {
+    return isMyGalleryEmpty
       ? <FlatList
           showsVerticalScrollIndicator={false}
           data={myGallery}
@@ -88,8 +101,50 @@ export default function HomeScreen() {
       : <EmptyGallery />
   }
 
+  const ContentGallery = () => {
+    return isMyGalleryEmpty
+      ? <FlatList
+          key={0}
+          showsVerticalScrollIndicator={false}
+          data={myGallery}
+          renderItem={({item}) => <SelectableItem
+              id={item['id']}
+              uri={item['uri']}
+              title={item['title']}
+              sizeImage="medium"
+            />
+          }
+        />
+      : <EmptyGallery />
+  }
+
+  const renderTabBar = (props:any) => {
+    const tabIcons = [
+      Icons["grid"],
+      Icons["square"]
+    ];
+
+    return  <View style={styles.tabBar}>
+    {
+      routes.map((route, i) => <TouchableOpacity
+        key={i}
+        onPress={() => setIndex(i)}
+        style={[styles.tabItem, { borderBottomWidth: 2, borderBottomColor: index == i ? 'black' : 'white' }]}
+        >
+          {tabIcons[i]}
+        </TouchableOpacity>
+      )
+    }
+    </View>
+  }
+
+  const renderScene = SceneMap({
+    first: ContentGridGallery,
+    second: ContentGallery,
+  });
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0 }}>
       <HeaderGallery
         setSelectedPictures={() => setSelectedPictures([])}
         picturesCurrentlySelected={picturesCurrentlySelected}
@@ -108,7 +163,28 @@ export default function HomeScreen() {
         setModalVisible={setVisible}
         setMyGallery={setMyGallery}
       />
-      <ContentGallery />
+      <TabView
+        navigationState={{ index, routes }}
+        renderTabBar={renderTabBar}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
+      />
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  tabBar: {
+    flexDirection: 'row',
+  },
+  tabItem: {
+    flex: 1,
+    backgroundColor: "#FFF",
+    alignItems: 'center',
+    padding: 16,
+  },
+});

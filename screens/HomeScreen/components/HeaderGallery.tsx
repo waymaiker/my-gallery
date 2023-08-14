@@ -61,7 +61,7 @@ export default function HeaderGallery({addPhoto, deletePhoto, setSelectedPicture
     width: '100%',
     justifyContent:'space-around',
     backgroundColor: 'white',
-    padding: 10
+    paddingTop: 10,
   }}>
     <HeaderLeft />
     <HeaderTitle />
