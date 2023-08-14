@@ -1,16 +1,28 @@
 import React from "react";
+import * as Device from 'expo-device';
 import { useEffect, useState } from "react";
 import { useNavigation } from '@react-navigation/native';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import { FlatList, Platform, Pressable, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
+import { TabView, SceneMap } from 'react-native-tab-view';
+import {
+  FlatList,
+  Pressable,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+  View
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import usePhoneOrientationProvider from "../../hooks/usePhoneOrientationProvider";
 
+import { Icons } from "../../constants/constants";
 import ImageCard from "../../components/ImageCard";
 import ModalScreen from "../ModalScreen/ModalScreen";
 import HeaderGallery from "./components/HeaderGallery";
-import { Icons } from "../../constants/constants";
+import BottomGallery from "./components/BottomGallery";
+import EmptyGallery from "./components/EmptyGallery";
 
 type ItemMyGalleryProps = {
   id: number,
@@ -63,11 +75,10 @@ export default function HomeScreen() {
     }
   }
 
-  const EmptyGallery = () => (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{fontSize: 20}}> Your gallery is currently empty </Text>
-    </View>
-  )
+  const addPhoto = () => {
+    setVisible(true)
+    setSelectedPictures([])
+  }
 
   const SelectableItem = ({id, uri, title, sizeImage}: ItemMyGalleryProps) => {
     return <Pressable
@@ -107,7 +118,8 @@ export default function HomeScreen() {
           key={0}
           showsVerticalScrollIndicator={false}
           data={myGallery}
-          renderItem={({item}) => <SelectableItem
+          renderItem={({item}) =>
+            <SelectableItem
               id={item['id']}
               uri={item['uri']}
               title={item['title']}
@@ -144,14 +156,11 @@ export default function HomeScreen() {
   });
 
   return (
-    <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0 }}>
+    <SafeAreaView style={{ flex: 1, paddingTop: Device.osName == 'android' ? StatusBar.currentHeight : 0 }}>
       <HeaderGallery
         setSelectedPictures={() => setSelectedPictures([])}
         picturesCurrentlySelected={picturesCurrentlySelected}
-        addPhoto={() => {
-          setVisible(true)
-          setSelectedPictures([])
-        }}
+        addPhoto={addPhoto}
         deletePhoto={() => {
           const newGallery = myGallery.filter(element => !picturesCurrentlySelected.includes(element['id']))
           setMyGallery(newGallery)
@@ -160,6 +169,7 @@ export default function HomeScreen() {
       />
       <ModalScreen
         modalVisible={visible}
+        myGallery={myGallery}
         setModalVisible={setVisible}
         setMyGallery={setMyGallery}
       />
@@ -170,6 +180,7 @@ export default function HomeScreen() {
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
       />
+      <BottomGallery addPhoto={addPhoto}/>
     </SafeAreaView>
   );
 }

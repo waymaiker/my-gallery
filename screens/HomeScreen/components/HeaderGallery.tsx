@@ -13,13 +13,6 @@ type HeaderGalleryProps = {
 export default function HeaderGallery({addPhoto, deletePhoto, setSelectedPictures, picturesCurrentlySelected}:HeaderGalleryProps) {
   const isPicturesCurrentlySelected = picturesCurrentlySelected.length > 0;
 
-  const AddPhotoButton = () => (
-    <CustomButton
-      withIcon="add"
-      action={() => addPhoto()}
-    />
-  )
-
   const DeletePhotoButton = () => (
     <CustomButton
       withIcon="trash"
@@ -43,7 +36,6 @@ export default function HeaderGallery({addPhoto, deletePhoto, setSelectedPicture
   const HeaderRight = () => {
     return <View style={{ flexDirection: 'row', width:'33%', justifyContent:'flex-end' }}>
       { isPicturesCurrentlySelected && <DeletePhotoButton /> }
-      <AddPhotoButton />
     </View>
   }
 

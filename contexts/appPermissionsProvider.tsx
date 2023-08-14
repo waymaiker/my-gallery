@@ -1,6 +1,6 @@
 import React from "react";
 import { createContext, useState } from "react"
-import { PermissionsAndroid, Platform } from "react-native";
+import { PermissionsAndroid } from "react-native";
 
 import * as Device from 'expo-device';
 import { Camera } from 'expo-camera';
@@ -31,8 +31,9 @@ export const AppPermissionsProvider = ({ children }: ItemProps) => {
   const [isCameraPermissionGranted, setCameraPermission] = useState(false);
 
   const askDataPermissions = async () => {
+
     if(Device.osName === 'Android'){
-      const permissionType = Platform.Version >= 33
+      const permissionType = Number(Device?.osVersion) >= 33
       ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
       : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
 
