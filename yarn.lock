@@ -2503,6 +2503,11 @@
     "@urql/core" ">=2.3.1"
     "wonka" "^4.0.14"
 
+"@valdio/react-native-scrollable-tabview@^0.8.12":
+  "integrity" "sha512-4aYnb7lA4Mo7+U2xijbKwJ7jcphBJs0ILVlvqa+SB9jg1sy1M+CkcNHwUTTnK60lCFXLCseJmECtu/JRR8ZpzA=="
+  "resolved" "https://registry.npmjs.org/@valdio/react-native-scrollable-tabview/-/react-native-scrollable-tabview-0.8.12.tgz"
+  "version" "0.8.12"
+
 "@xmldom/xmldom@^0.8.8":
   "integrity" "sha512-0LNz4EY8B/8xXY86wMrQ4tz6zEHZv9ehFMJPm8u2gq5lQ71cfRKdaKyxfJAx5aUoyzx0qzgURblTisPGgz3d+Q=="
   "resolved" "https://registry.npmjs.org/@xmldom/xmldom/-/xmldom-0.8.8.tgz"
@@ -4111,10 +4116,10 @@
     "@expo/config" "~8.0.0"
     "uuid" "^3.3.2"
 
-"expo-device@^5.4.0":
-  "integrity" "sha512-TQxSVPrC6njCbzZ9Cqpc1lGLIjPmO1zBIbqW7CTqBPD1dOIMrgQvt7lZZhkHh3pWzoZznH283sSYqCvy3XcURw=="
-  "resolved" "https://registry.npmjs.org/expo-device/-/expo-device-5.4.0.tgz"
-  "version" "5.4.0"
+"expo-device@~5.2.1":
+  "integrity" "sha512-ZWGph+fGQPxo9v2e0YygPb45Hl+ZR3mh4tpLY5AOYK/sNjQy+Lu3T/sLGIdi2TOcYNL2oZwzZ6eGvwVYmdIfLg=="
+  "resolved" "https://registry.npmjs.org/expo-device/-/expo-device-5.2.1.tgz"
+  "version" "5.2.1"
   dependencies:
     "ua-parser-js" "^0.7.33"
 
