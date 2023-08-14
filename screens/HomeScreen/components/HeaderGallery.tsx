@@ -1,5 +1,6 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import * as Device from 'expo-device';
 
 import CustomButton from "../../../components/CustomButton"
 
@@ -43,7 +44,13 @@ export default function HeaderGallery({addPhoto, deletePhoto, setSelectedPicture
     return isPicturesCurrentlySelected
       ? <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={{ fontWeight:'bold', fontSize:15 }}> Selected </Text>
-          <Text style={{ backgroundColor:'grey', padding:5, borderRadius: 20 }}> {picturesCurrentlySelected.length} </Text>
+          {
+            Device.osName === 'iOS'
+             ? <View style={style.iosNumberOfSelection}>
+                <Text> {picturesCurrentlySelected.length} </Text>
+               </View>
+             : <Text style={style.androidNumberOfSelection}> {picturesCurrentlySelected.length} </Text>
+          }
         </View>
       : <Text style={{fontWeight:'bold', fontSize:15 }}> My Portfolio </Text>
   }
@@ -60,3 +67,8 @@ export default function HeaderGallery({addPhoto, deletePhoto, setSelectedPicture
     <HeaderRight />
   </View>
 }
+
+const style = StyleSheet.create({
+  androidNumberOfSelection: { backgroundColor:'grey', padding:5, borderRadius: 20 },
+  iosNumberOfSelection: { backgroundColor:'grey', padding:5, borderRadius: 20 }
+});
