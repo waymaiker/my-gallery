@@ -11,6 +11,7 @@ import ImageCard from "../../components/ImageCard";
 import ModalScreen from "../ModalScreen/ModalScreen";
 import HeaderGallery from "./components/HeaderGallery";
 import { Icons } from "../../constants/constants";
+import BottomGallery from "./components/BottomGallery";
 
 type ItemMyGalleryProps = {
   id: number,
@@ -63,6 +64,11 @@ export default function HomeScreen() {
     }
   }
 
+  const addPhoto = () => {
+    setVisible(true)
+    setSelectedPictures([])
+  }
+
   const EmptyGallery = () => (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={{fontSize: 20}}> Your gallery is currently empty </Text>
@@ -90,12 +96,15 @@ export default function HomeScreen() {
           data={myGallery}
           numColumns={isPortrait ? 3 : 6}
           key={isPortrait ? 3 : 6}
-          renderItem={({item}) =>
-            <SelectableItem
-              id={item['id']}
-              uri={item['uri']}
-              title={item['title']}
-            />
+          renderItem={({item}) =>{
+            console.log(item['id']);
+
+              return <SelectableItem
+                id={item['id']}
+                uri={item['uri']}
+                title={item['title']}
+              />
+            }
           }
         />
       : <EmptyGallery />
@@ -107,12 +116,16 @@ export default function HomeScreen() {
           key={0}
           showsVerticalScrollIndicator={false}
           data={myGallery}
-          renderItem={({item}) => <SelectableItem
-              id={item['id']}
-              uri={item['uri']}
-              title={item['title']}
-              sizeImage="medium"
-            />
+          renderItem={({item}) =>{
+            console.log(item['id']);
+
+              return <SelectableItem
+                id={item['id']}
+                uri={item['uri']}
+                title={item['title']}
+                sizeImage='medium'
+              />
+            }
           }
         />
       : <EmptyGallery />
@@ -148,10 +161,7 @@ export default function HomeScreen() {
       <HeaderGallery
         setSelectedPictures={() => setSelectedPictures([])}
         picturesCurrentlySelected={picturesCurrentlySelected}
-        addPhoto={() => {
-          setVisible(true)
-          setSelectedPictures([])
-        }}
+        addPhoto={addPhoto}
         deletePhoto={() => {
           const newGallery = myGallery.filter(element => !picturesCurrentlySelected.includes(element['id']))
           setMyGallery(newGallery)
@@ -170,6 +180,7 @@ export default function HomeScreen() {
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
       />
+      <BottomGallery addPhoto={addPhoto}/>
     </SafeAreaView>
   );
 }
