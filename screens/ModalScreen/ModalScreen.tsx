@@ -31,6 +31,7 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
   //States
   const [pictureTitle, setPictureTitle] = useState('')
   const [pictureURI, setPictureURI] = useState<string>('')
+  const [pictureSize, setPictureSize] = useState<object>({})
   const [isPictureSelected, setIsPictureSelected] = useState(false)
   const [isPictureTaken, setIsPictureTaken] = useState(false)
   const [numbersOfPictures, setNumberOfPictures] = useState<number>(myGallery.length)
@@ -71,7 +72,11 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
 
       if(!result.canceled){
         const uri:string = result.assets[0].uri;
+        const height:number = result.assets[0].height
+        const width:number = result.assets[0].width
+
         setPictureURI(uri)
+        setPictureSize({'height': height, 'width': width})
         setIsPictureSelected(true)
       }
     } else {
@@ -88,7 +93,11 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
 
       if(!result.canceled){
         const uri:string = result.assets[0].uri;
+        const height:number = result.assets[0].height
+        const width:number = result.assets[0].width
+
         setPictureURI(uri)
+        setPictureSize({'height': height, 'width': width})
         setIsPictureTaken(true)
       }
     } else {
@@ -114,7 +123,7 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
             action={
               () => {
                 setMyGallery((myGallery:object[]) => {
-                    const res = [...myGallery, {'id': numbersOfPictures, 'title': pictureTitle, 'uri': pictureURI }];
+                    const res = [...myGallery, {'id': numbersOfPictures, 'title': pictureTitle, 'uri': pictureURI, 'size': pictureSize }];
                     setNumberOfPictures(res.length);
 
                     return res
