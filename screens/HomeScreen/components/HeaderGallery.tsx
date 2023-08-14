@@ -5,13 +5,12 @@ import * as Device from 'expo-device';
 import CustomButton from "../../../components/CustomButton"
 
 type HeaderGalleryProps = {
-  addPhoto: Function,
   deletePhoto: Function,
   setSelectedPictures: Function,
   picturesCurrentlySelected: Array<any>
 }
 
-export default function HeaderGallery({addPhoto, deletePhoto, setSelectedPictures, picturesCurrentlySelected}:HeaderGalleryProps) {
+export default function HeaderGallery({deletePhoto, setSelectedPictures, picturesCurrentlySelected}:HeaderGalleryProps) {
   const isPicturesCurrentlySelected = picturesCurrentlySelected.length > 0;
 
   const DeletePhotoButton = () => (

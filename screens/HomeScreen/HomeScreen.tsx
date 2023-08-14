@@ -163,7 +163,6 @@ export default function HomeScreen() {
       <HeaderGallery
         setSelectedPictures={() => setSelectedPictures([])}
         picturesCurrentlySelected={picturesCurrentlySelected}
-        addPhoto={addPhoto}
         deletePhoto={() => {
           const newGallery = myGallery.filter(element => !picturesCurrentlySelected.includes(element['id']))
           setMyGallery(newGallery)
