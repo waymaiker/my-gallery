@@ -6,11 +6,11 @@ import ImageCard from "../components/ImageCard";
 import usePhoneOrientationProvider from "../hooks/usePhoneOrientationProvider";
 
 type CardScreenProps = {
-  route: { params: { title: string, uri: string } }
+  route: { params: { title: string, uri: string, id: number } }
 }
 
 export default function CardScreen({route}: CardScreenProps) {
-  const { params: { title, uri } } = route;
+  const { params: { id, title, uri } } = route;
   const { isPortrait } = usePhoneOrientationProvider()
 
   return (
@@ -26,8 +26,9 @@ export default function CardScreen({route}: CardScreenProps) {
         {title}
       </Text>
       <ImageCard
+        id={id}
         uri={uri}
-        fullScreen={true}
+        sizeType="large"
       />
     </View>
   );
