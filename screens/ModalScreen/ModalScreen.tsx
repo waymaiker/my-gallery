@@ -4,6 +4,7 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import useAppPermissionsProvider from "../../hooks/useAppPermissionsProvider";
 
@@ -11,19 +12,28 @@ import CustomButton from '../../components/CustomButton';
 import ModalHeaderWithExitButton from './components/ModalHeaderWithExitButton';
 import CustomModal from '../../components/CustomModal';
 
+type ItemMyGalleryType = {
+  id: number,
+  uri: string,
+  title: string,
+  sizeImage?: string
+}
+
+
 type ItemProps = {
   modalVisible: boolean,
   setModalVisible: Function,
-  setMyGallery: Function
+  setMyGallery: Function,
+  myGallery: Array<ItemMyGalleryType>
 };
 
-export default function ModalScreen({modalVisible, setModalVisible, setMyGallery}: ItemProps) {
+export default function ModalScreen({modalVisible, setModalVisible, setMyGallery, myGallery}: ItemProps) {
   //States
   const [pictureTitle, setPictureTitle] = useState('')
   const [pictureURI, setPictureURI] = useState<string>('')
   const [isPictureSelected, setIsPictureSelected] = useState(false)
   const [isPictureTaken, setIsPictureTaken] = useState(false)
-  const [nmbersOfPictures, setNmberOfPictures] = useState<number>(0)
+  const [numbersOfPictures, setNumberOfPictures] = useState<number>(myGallery.length)
 
   //Hooks
   const { control, watch, reset, } = useForm();
@@ -39,6 +49,18 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
     watch((value) => setPictureTitle(value['title']));
   },[pictureTitle])
 
+  useEffect(()=>{ getData(); }, []);
+  useEffect(()=>{ storeData(); }, [numbersOfPictures]);
+
+  const storeData = async () => {
+    await AsyncStorage.setItem('numbersOfPictures', String(myGallery.length));
+  }
+
+  const getData = async () => {
+    const data = await AsyncStorage.getItem('numbersOfPictures');
+    setNumberOfPictures(Number(data))
+  }
+
   const showMyGallery = async () => {
     if(pictureTitle.length > 0){
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -50,14 +72,12 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
       if(!result.canceled){
         const uri:string = result.assets[0].uri;
         setPictureURI(uri)
-        setNmberOfPictures(nmbersOfPictures => nmbersOfPictures + 1);
         setIsPictureSelected(true)
       }
     } else {
       alert('Please add a title to your picture')
     }
   }
-
 
   const takeAPicture = async () => {
     if(pictureTitle.length > 0){
@@ -69,7 +89,6 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
       if(!result.canceled){
         const uri:string = result.assets[0].uri;
         setPictureURI(uri)
-        setNmberOfPictures(nmbersOfPictures => nmbersOfPictures + 1);
         setIsPictureTaken(true)
       }
     } else {
@@ -90,11 +109,17 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
       <CustomButton text="Cancel" action={()=>resetAll()}/>
       {
         (isPictureSelected || isPictureTaken)
-        && <CustomButton
+          && <CustomButton
             text="Add Picture"
             action={
               () => {
-                setMyGallery((myGallery:object[]) => [...myGallery, {'id': nmbersOfPictures, 'title': pictureTitle, 'uri': pictureURI }])
+                setMyGallery((myGallery:object[]) => {
+                    const res = [...myGallery, {'id': numbersOfPictures, 'title': pictureTitle, 'uri': pictureURI }];
+                    setNumberOfPictures(res.length);
+
+                    return res
+                  }
+                )
                 resetAll()
               }
             }
