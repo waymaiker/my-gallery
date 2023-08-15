@@ -3,6 +3,8 @@ PODS:
   - DoubleConversion (1.1.6)
   - EXApplication (5.1.1):
     - ExpoModulesCore
+  - EXCamera (13.2.1):
+    - ExpoModulesCore
   - EXConstants (14.2.1):
     - ExpoModulesCore
   - EXFileSystem (15.2.2):
@@ -12,9 +14,12 @@ PODS:
   - EXImageLoader (4.1.1):
     - ExpoModulesCore
     - React-Core
+  - EXMediaLibrary (15.2.3):
+    - ExpoModulesCore
+    - React-Core
   - Expo (48.0.20):
     - ExpoModulesCore
-  - ExpoHead (0.0.8):
+  - ExpoDevice (5.2.1):
     - ExpoModulesCore
   - ExpoImage (1.0.1):
     - ExpoModulesCore
@@ -325,6 +330,8 @@ PODS:
   - react-native-mmkv (2.10.1):
     - MMKV (>= 1.2.13)
     - React-Core
+  - react-native-pager-view (6.1.2):
+    - React-Core
   - react-native-safe-area-context (4.5.0):
     - RCT-Folly
     - RCTRequired
@@ -421,12 +428,12 @@ PODS:
     - React-Core
   - RNGestureHandler (2.9.0):
     - React-Core
-  - RNImageCropPicker (0.38.0):
+  - RNImageCropPicker (0.38.1):
     - React-Core
     - React-RCTImage
-    - RNImageCropPicker/QBImagePickerController (= 0.38.0)
+    - RNImageCropPicker/QBImagePickerController (= 0.38.1)
     - TOCropViewController
-  - RNImageCropPicker/QBImagePickerController (0.38.0):
+  - RNImageCropPicker/QBImagePickerController (0.38.1):
     - React-Core
     - React-RCTImage
     - TOCropViewController
@@ -478,12 +485,14 @@ DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXApplication (from `../node_modules/expo-application/ios`)
+  - EXCamera (from `../node_modules/expo-camera/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
   - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
+  - EXMediaLibrary (from `../node_modules/expo-media-library/ios`)
   - Expo (from `../node_modules/expo`)
-  - ExpoHead (from `../node_modules/expo-head/ios`)
+  - ExpoDevice (from `../node_modules/expo-device/ios`)
   - ExpoImage (from `../node_modules/expo-image/ios`)
   - ExpoImagePicker (from `../node_modules/expo-image-picker/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
@@ -511,6 +520,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
+  - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -556,6 +566,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXApplication:
     :path: "../node_modules/expo-application/ios"
+  EXCamera:
+    :path: "../node_modules/expo-camera/ios"
   EXConstants:
     :path: "../node_modules/expo-constants/ios"
   EXFileSystem:
@@ -564,10 +576,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-font/ios"
   EXImageLoader:
     :path: "../node_modules/expo-image-loader/ios"
+  EXMediaLibrary:
+    :path: "../node_modules/expo-media-library/ios"
   Expo:
     :path: "../node_modules/expo"
-  ExpoHead:
-    :path: "../node_modules/expo-head/ios"
+  ExpoDevice:
+    :path: "../node_modules/expo-device/ios"
   ExpoImage:
     :path: "../node_modules/expo-image/ios"
   ExpoImagePicker:
@@ -618,6 +632,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-mmkv:
     :path: "../node_modules/react-native-mmkv"
+  react-native-pager-view:
+    :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   React-perflogger:
@@ -665,12 +681,14 @@ SPEC CHECKSUMS:
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   EXApplication: d8f53a7eee90a870a75656280e8d4b85726ea903
+  EXCamera: a323a5942b5e7fc8349e17d728e91c18840ad561
   EXConstants: f348da07e21b23d2b085e270d7b74f282df1a7d9
   EXFileSystem: 844e86ca9b5375486ecc4ef06d3838d5597d895d
   EXFont: 6ea3800df746be7233208d80fe379b8ed74f4272
   EXImageLoader: fd053169a8ee932dd83bf1fe5487a50c26d27c2b
+  EXMediaLibrary: 587cd8aad27a6fc8d7c38b950bc75bc1845a7480
   Expo: b7d2843b0a0027d0ce76121a63085764355a16ed
-  ExpoHead: a4a07c807ee26eb719d0950d94f8d92547293821
+  ExpoDevice: e0bebf68f978b3d353377ce42e73c20c0a070215
   ExpoImage: 55b537a1f50df2f6fc3c2d82552e6d1df397a73d
   ExpoImagePicker: 270dea232b3a072d981dd564e2cafc63a864edb1
   ExpoKeepAwake: 69f5f627670d62318410392d03e0b5db0f85759a
@@ -704,6 +722,7 @@ SPEC CHECKSUMS:
   React-jsinspector: c712f9e3bb9ba4122d6b82b4f906448b8a281580
   React-logger: 342f358b8decfbf8f272367f4eacf4b6154061be
   react-native-mmkv: dea675cf9697ad35940f1687e98e133e1358ef9f
+  react-native-pager-view: 54bed894cecebe28cede54c01038d9d1e122de43
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
   React-perflogger: d21f182895de9d1b077f8a3cd00011095c8c9100
   React-RCTActionSheet: 0151f83ef92d2a7139bba7dfdbc8066632a6d47b
@@ -721,7 +740,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNFlashList: 399bf6a0db68f594ad2c86aaff3ea39564f39f8a
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
-  RNImageCropPicker: ffbba608264885c241cbf3a8f78eb7aeeb978241
+  RNImageCropPicker: 648356d68fbf9911a1016b3e3723885d28373eda
   RNReanimated: cc5e3aa479cb9170bcccf8204291a6950a3be128
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   SDWebImage: cb032eba469c54e0000e78bcb0a13cdde0a52798

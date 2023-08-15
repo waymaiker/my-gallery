@@ -13,8 +13,8 @@ import {
   useWindowDimensions,
   View
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { getDataFromLocalStorage, setDataIntoLocalStorage } from "../../services/localStorage";
 import usePhoneOrientationProvider from "../../hooks/usePhoneOrientationProvider";
 
 import { Icons } from "../../constants/constants";
@@ -58,16 +58,13 @@ export default function HomeScreen() {
   const navigation = useNavigation<Nav>()
 
   //Expected effects
-  useEffect(()=>{ setSelectedPictures([]), getData() }, [])
-  useEffect(()=>{ storeData() },[myGallery, picturesCurrentlySelected])
+  useEffect(()=>{ initMyGallery() }, [])
+  useEffect(()=>{ setDataIntoLocalStorage('myGallery', myGallery) },[myGallery, picturesCurrentlySelected])
 
-  const storeData = async () => {
-    await AsyncStorage.setItem('myGallery', JSON.stringify(myGallery));
-  }
-
-  const getData = async () => {
-    const data = await AsyncStorage.getItem('myGallery');
-    data?.length ? setMyGallery(JSON.parse(data)) : setMyGallery([])
+  const initMyGallery = async () => {
+    setSelectedPictures([]);
+    const res = await getDataFromLocalStorage('myGallery', [])
+    setMyGallery(res);
   }
 
   const selectAnItem = (id: number) => {
