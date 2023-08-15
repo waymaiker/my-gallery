@@ -23,11 +23,13 @@ import ModalScreen from "../ModalScreen/ModalScreen";
 import HeaderGallery from "./components/HeaderGallery";
 import BottomGallery from "./components/BottomGallery";
 import EmptyGallery from "./components/EmptyGallery";
+import AlertDeletion from "./components/AlertDeletion";
 
 type ItemMyGalleryProps = {
   id: number,
   uri: string,
   title: string,
+  size: object,
   sizeImage?: string
 }
 
@@ -38,6 +40,7 @@ type Nav = {
 export default function HomeScreen() {
   //States
   const [visible, setVisible] = useState(false);
+  const [visibleAlertDeletion, setVisibleAlertDeletion] = useState(false);
   const [myGallery, setMyGallery] = useState<ItemMyGalleryProps[]>([])
   const [picturesCurrentlySelected, setSelectedPictures] = useState<number[]>([])
   const [index, setIndex] = React.useState(0);
@@ -80,10 +83,15 @@ export default function HomeScreen() {
     setSelectedPictures([])
   }
 
-  const SelectableItem = ({id, uri, title, sizeImage}: ItemMyGalleryProps) => {
+  const resetSelectedPictures = () => {
+    setVisibleAlertDeletion(false)
+    setSelectedPictures([])
+  }
+
+  const SelectableItem = ({id, uri, title, sizeImage, size}: ItemMyGalleryProps) => {
     return <Pressable
       onLongPress={() => selectAnItem(id)}
-      onPress={() => navigation.navigate('CardScreen', { id:id, uri: uri, title: title } ) }
+      onPress={() => navigation.navigate('CardScreen', { id:id, uri: uri, title: title, size: size } ) }
       style={picturesCurrentlySelected.includes(id) ? { opacity: 0.5 } : {}}
     >
       <ImageCard
@@ -106,6 +114,7 @@ export default function HomeScreen() {
               id={item['id']}
               uri={item['uri']}
               title={item['title']}
+              size={item['size']}
             />
           }
         />
@@ -123,6 +132,7 @@ export default function HomeScreen() {
               id={item['id']}
               uri={item['uri']}
               title={item['title']}
+              size={item['size']}
               sizeImage="medium"
             />
           }
@@ -156,17 +166,22 @@ export default function HomeScreen() {
   });
 
   return (
-    <SafeAreaView style={{ flex: 1, paddingTop: Device.osName == 'android' ? StatusBar.currentHeight : 0 }}>
+    <SafeAreaView style={{ flex: 1, paddingTop: Device.osName == 'Android' ? StatusBar.currentHeight : 0 }}>
       <HeaderGallery
         setSelectedPictures={() => setSelectedPictures([])}
         picturesCurrentlySelected={picturesCurrentlySelected}
-        addPhoto={addPhoto}
-        deletePhoto={() => {
+        deletePhoto={() => setVisibleAlertDeletion(true)}
+      />
+     <AlertDeletion
+        isVisible={visibleAlertDeletion}
+        setVisibility={setVisibleAlertDeletion}
+        resetSelectedPictures={resetSelectedPictures}
+        deleteSelectedPictures={()=>{
           const newGallery = myGallery.filter(element => !picturesCurrentlySelected.includes(element['id']))
           setMyGallery(newGallery)
-          setSelectedPictures([])
+          resetSelectedPictures()
         }}
-      />
+     />
       <ModalScreen
         modalVisible={visible}
         myGallery={myGallery}

@@ -19,7 +19,6 @@ type ItemMyGalleryType = {
   sizeImage?: string
 }
 
-
 type ItemProps = {
   modalVisible: boolean,
   setModalVisible: Function,
@@ -31,6 +30,7 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
   //States
   const [pictureTitle, setPictureTitle] = useState('')
   const [pictureURI, setPictureURI] = useState<string>('')
+  const [pictureSize, setPictureSize] = useState({'height': 0, 'width': 0})
   const [isPictureSelected, setIsPictureSelected] = useState(false)
   const [isPictureTaken, setIsPictureTaken] = useState(false)
   const [numbersOfPictures, setNumberOfPictures] = useState<number>(myGallery.length)
@@ -65,13 +65,17 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
     if(pictureTitle.length > 0){
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: false,
+        allowsEditing: true,
         quality: 1
       });
 
       if(!result.canceled){
         const uri:string = result.assets[0].uri;
+        const height:number = result.assets[0].height
+        const width:number = result.assets[0].width
+
         setPictureURI(uri)
+        setPictureSize({'height': height, 'width': width})
         setIsPictureSelected(true)
       }
     } else {
@@ -88,7 +92,11 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
 
       if(!result.canceled){
         const uri:string = result.assets[0].uri;
+        const height:number = result.assets[0].height
+        const width:number = result.assets[0].width
+
         setPictureURI(uri)
+        setPictureSize({'height': height, 'width': width})
         setIsPictureTaken(true)
       }
     } else {
@@ -114,7 +122,7 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
             action={
               () => {
                 setMyGallery((myGallery:object[]) => {
-                    const res = [...myGallery, {'id': numbersOfPictures, 'title': pictureTitle, 'uri': pictureURI }];
+                    const res = [...myGallery, {'id': numbersOfPictures, 'title': pictureTitle, 'uri': pictureURI, 'size': pictureSize }];
                     setNumberOfPictures(res.length);
 
                     return res
@@ -135,7 +143,7 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
     >
       <View style={styles.container}>
         <View style={styles.modalView}>
-          <ModalHeaderWithExitButton action={() => resetAll()}/>
+          <ModalHeaderWithExitButton title='Add a photo' action={() => resetAll()}/>
           <View style={styles.modalForm}>
             <Text style={styles.modalFormTitle}>Title:</Text>
             <Controller
