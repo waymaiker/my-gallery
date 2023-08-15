@@ -101,20 +101,23 @@ export default function HomeScreen() {
 
   const ContentGridGallery = () => {
     return isMyGalleryEmpty
-      ? <FlatList
-          showsVerticalScrollIndicator={false}
-          data={myGallery}
-          numColumns={isPortrait ? 3 : 6}
-          key={isPortrait ? 3 : 6}
-          renderItem={({item}) =>
-            <SelectableItem
-              id={item['id']}
-              uri={item['uri']}
-              title={item['title']}
-              size={item['size']}
-            />
-          }
-        />
+      ? <View style={ isPortrait ? {} : {alignItems: 'center'}}>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={myGallery}
+            numColumns={isPortrait ? 3 : 6}
+            key={isPortrait ? 3 : 6}
+            renderItem={({item}) =>
+              <SelectableItem
+                id={item['id']}
+                uri={item['uri']}
+                title={item['title']}
+                size={item['size']}
+                sizeImage={isPortrait ? "" : "small"}
+              />
+            }
+          />
+        </View>
       : <EmptyGallery />
   }
 

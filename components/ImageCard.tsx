@@ -10,11 +10,14 @@ type ItemProps = {
 
 export default function ImageCard({id, uri, sizeType, isSquare}: ItemProps) {
   const screenWidth = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
   const isLarge:boolean = sizeType == 'large';
   const aspectRatio:number = isSquare ? 1/2 : 1;
 
   const sT = () => {
     switch(sizeType){
+      case 'small':
+        return { width: screenWidth/7, height: screenHeight/4 }
       case 'medium':
         return { width: screenWidth, aspectRatio: 1 };
       case 'large':
