@@ -6,7 +6,9 @@
     "web": "expo start --web",
     "test": "jest --watch",
     "jest": {
-      "setupFiles": ["<rootDir>/jest.setup.js"]
+      "setupFiles": [
+        "<rootDir>/jest.setup.js"
+      ]
     }
   },
   "dependencies": {
