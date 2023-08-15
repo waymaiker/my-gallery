@@ -1,8 +1,8 @@
 {
   "expo": {
-    "scheme": "technical-test-react-native",
-    "name": "technical-test-react-native",
-    "slug": "technical-test-react-native",
+    "scheme": "pet-project",
+    "name": "pet-project",
+    "slug": "pet-project",
     "owner": "yieldstudio",
     "orientation": "default",
     "plugins": [
