@@ -1,5 +1,5 @@
 import  AsyncStorage  from '@react-native-community/async-storage';
-import { getDataFromLocalStorage } from '../../services/localStorage';
+import { getDataFromLocalStorage } from './mock_LocalStorage';
 
 describe('LocalStorage service', () => {
   it('if no result exist at key, return an empty array', async () => {    
