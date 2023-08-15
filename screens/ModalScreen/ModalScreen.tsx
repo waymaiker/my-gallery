@@ -143,7 +143,7 @@ export default function ModalScreen({modalVisible, setModalVisible, setMyGallery
     >
       <View style={styles.container}>
         <View style={styles.modalView}>
-          <ModalHeaderWithExitButton action={() => resetAll()}/>
+          <ModalHeaderWithExitButton title='Add a photo' action={() => resetAll()}/>
           <View style={styles.modalForm}>
             <Text style={styles.modalFormTitle}>Title:</Text>
             <Controller

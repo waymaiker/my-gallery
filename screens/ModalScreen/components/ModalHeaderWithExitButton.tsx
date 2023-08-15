@@ -3,12 +3,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type ItemsProps = {
-  action: Function
+  action: Function,
+  title: string
 }
 
-export default function ModalHeaderWithExitButton({action} : ItemsProps){
+export default function ModalHeaderWithExitButton({action, title} : ItemsProps){
   return <View style={styles.Title}>
-    <Text style={styles.Text}> Add a photo </Text>
+    <Text style={styles.Text}> {title} </Text>
     <TouchableOpacity onPress={()=>action()}>
       <Ionicons name="md-close" size={20} />
     </TouchableOpacity>
