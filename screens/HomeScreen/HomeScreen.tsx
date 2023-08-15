@@ -23,6 +23,7 @@ import ModalScreen from "../ModalScreen/ModalScreen";
 import HeaderGallery from "./components/HeaderGallery";
 import BottomGallery from "./components/BottomGallery";
 import EmptyGallery from "./components/EmptyGallery";
+import AlertDeletion from "./components/AlertDeletion";
 
 type ItemMyGalleryProps = {
   id: number,
@@ -39,6 +40,7 @@ type Nav = {
 export default function HomeScreen() {
   //States
   const [visible, setVisible] = useState(false);
+  const [visibleAlertDeletion, setVisibleAlertDeletion] = useState(false);
   const [myGallery, setMyGallery] = useState<ItemMyGalleryProps[]>([])
   const [picturesCurrentlySelected, setSelectedPictures] = useState<number[]>([])
   const [index, setIndex] = React.useState(0);
@@ -78,6 +80,11 @@ export default function HomeScreen() {
 
   const addPhoto = () => {
     setVisible(true)
+    setSelectedPictures([])
+  }
+
+  const resetSelectedPictures = () => {
+    setVisibleAlertDeletion(false)
     setSelectedPictures([])
   }
 
@@ -163,12 +170,18 @@ export default function HomeScreen() {
       <HeaderGallery
         setSelectedPictures={() => setSelectedPictures([])}
         picturesCurrentlySelected={picturesCurrentlySelected}
-        deletePhoto={() => {
+        deletePhoto={() => setVisibleAlertDeletion(true)}
+      />
+     <AlertDeletion
+        isVisible={visibleAlertDeletion}
+        setVisibility={setVisibleAlertDeletion}
+        resetSelectedPictures={resetSelectedPictures}
+        deleteSelectedPictures={()=>{
           const newGallery = myGallery.filter(element => !picturesCurrentlySelected.includes(element['id']))
           setMyGallery(newGallery)
-          setSelectedPictures([])
+          resetSelectedPictures()
         }}
-      />
+     />
       <ModalScreen
         modalVisible={visible}
         myGallery={myGallery}
