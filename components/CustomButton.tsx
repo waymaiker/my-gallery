@@ -10,10 +10,11 @@ type CustomButtonAttributesType = {
   backgroundColor?: string
 };
 
-export default function CustomButton({action, text, isDisabled, withIcon, backgroundColor}: CustomButtonAttributesType) {
+export default function CustomButton({ action, text, isDisabled, withIcon, backgroundColor }: CustomButtonAttributesType) {
   const isBackgroundColor = backgroundColor != undefined ? {backgroundColor: backgroundColor} : {};
 
   return <TouchableOpacity
+    testID="custom-button"
     style={ withIcon == undefined ? [isDisabled ? styles.buttonDisabled : styles.buttonClose, styles.button, isBackgroundColor] : {}}
     onPress={ isDisabled ? () => {} : () => action()}
   >
