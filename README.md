@@ -12,6 +12,7 @@ REACT NATIVE APPLICATION
   * d'ajouter des photos depuis sa gallery (cliquer sur +)
   * de prendre une photo et de l'ajouter  
   * de supprimer des photos (rester appuyer une photo pour la selectionne. Possibilité de supprimer plusieurs photos en même temps)
+  * demande de confirmation avant la suppression des photos sélectionnées
   * d'avoir les photos enregistrées localement => AsyncStorage
   * la demande de permission (via un hook)
   * via le hook de redemander la permission tant que celle-ci n'a pas été donnée
