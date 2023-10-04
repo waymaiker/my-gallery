@@ -1,6 +1,5 @@
-# MY GALLERY
-
-My react-native playground 
+# My Gallery
+A React-Native App
 
 ### Screens de l'application
 
